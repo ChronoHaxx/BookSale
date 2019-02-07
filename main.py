@@ -1,16 +1,18 @@
 from openpyxl import load_workbook
 
 #loading excel wb and declaring the sheet
-def loadWorkbook(filename):
-    wb = load_workbook(filename) #= 'DATA_BUKU.xlsx')
-    sheet1 = wb['Sheet1']
+wb = load_workbook(filename = 'DATA_BUKU.xlsx')
+sheet1 = wb['Sheet1']
+
 
 #prompting for cell value
 def promptNo_siri():
+    global no_siri
     no_siri = input("No siri : ")
 
 #finding cell and its row
 def findCell(sheet1, no_siri):
+    global i
     i = 1
     for row in sheet1.iter_rows():
         if sheet1.cell(row = i,column = 1).value == int(no_siri) :
@@ -26,11 +28,14 @@ def findCell(sheet1, no_siri):
                 list_with_values.append(cell.value)
             print(list_with_values)
             print(sheet1.cell(row = i,column = 1).coordinate)
+            
             break
         i += 1
+    return i
 
 #checking for correct value.
 def cellCheck(sheet1, i):
+    global cell
     cell = sheet1.cell(row = i,column = 1).coordinate
     print("value for cell " + cell + ": " + str(sheet1[cell].value)) 
 
@@ -47,10 +52,12 @@ def tickCoord(sheet1, cell):
     charnew = chr(ord(char1) + 5)
     print(charnew)
     #joining existing constant row char with new col value
+    global inputnew
     inputnew = ''.join(charnew + char2)
     print(inputnew)
     #checking existing value at Tick column
     print(sheet1[inputnew].value) 
+    inputnew
 
 def insertTick(sheet1, inputnew):
     #inserting a 'tick' ("/")
@@ -58,7 +65,15 @@ def insertTick(sheet1, inputnew):
     #checking its value now
     print(sheet1[inputnew].value) 
 
+
+promptNo_siri()
+
+findCell(sheet1, no_siri)
+cellCheck(sheet1, i)
+tickCoord(sheet1, cell)
+insertTick(sheet1, inputnew)
+
+
 #saving the file
-def saveWorkbook(wb, filename):
-    #make sure to close the excel or else perm is denied
-    wb.save(filename) #= 'DATA_BUKU.xlsx')
+#make sure to close the excel or else perm is denied
+wb.save(filename = 'DATA_BUKU.xlsx')
