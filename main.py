@@ -2,14 +2,15 @@ from openpyxl import load_workbook
 from prettytable import PrettyTable
 
 #loading excel wb and declaring the sheet
-wb = load_workbook(filename = 'DATA_BUKU.xlsx')
+excfile = 'DATA_BUKU.xlsx'
+wb = load_workbook(filename = excfile)
 sheet1 = wb['Sheet1']
 
 
 #prompting for action
 def promptAction():
     global action
-    print("KEY \n1.INSERT TICK\n2.DELETE TICK\n3.VIEW ROW\n4.ANALYSIS\n5.QUIT\n6.QUICK TICK")
+    print("KEY \n1.INSERT TICK\n2.DELETE TICK\n3.VIEW ROW\n4.ANALYSIS\n5.QUICK TICK\n6.QUIT")
     action = input("Enter a key :")
     
     if action == '1' :
@@ -27,7 +28,7 @@ def promptAction():
         print("You chose quick tick, be careful... C: \nEnter 'Q' to quit.")
         act5()
     elif action == '6' :
-        wb.save(filename = 'DATA_BUKU.xlsx')
+        wb.save(filename = excfile)
         exit()
     else :
         print('Your input is out of context, please try again.')
@@ -46,7 +47,7 @@ def act12():
         list_with_values[5] = "/"
         newTable.add_row(list_with_values)
         print(newTable)
-        wb.save(filename = 'DATA_BUKU.xlsx')
+        wb.save(filename = excfile)
     elif action == '2' :
         deleteTick(sheet1, inputnew)
         newTable = PrettyTable()
@@ -54,9 +55,9 @@ def act12():
         list_with_values[5] = ""
         newTable.add_row(list_with_values)
         print(newTable)
-        wb.save(filename = 'DATA_BUKU.xlsx')
+        wb.save(filename = excfile)
     else :
-        wb.save(filename = 'DATA_BUKU.xlsx')
+        wb.save(filename = excfile)
         exit()
         
 def act3():
@@ -101,12 +102,12 @@ def act5():
             else:
                 tickCoord(sheet1, cell)
                 insertTick(sheet1, inputnew)
+                wb.save(filename = excfile)
                 newTable = PrettyTable()
                 newTable.field_names = (list_with_values_header)
                 list_with_values[5] = "/"
                 newTable.add_row(list_with_values)
                 print(newTable)
-                wb.save(filename = 'DATA_BUKU.xlsx')
 
 #prompting for cell value
 def promptNo_siri():
@@ -165,6 +166,12 @@ def tickCoord(sheet1, cell):
     # row and col char are separated
     char1 = list(cell)[0]
     char2 = list(cell)[1]
+    if bool(list(cell)[2]) == True:
+        char3 = list(cell)[2]
+    elif bool(list(cell)[3]) == True:
+        char4 = list(cell)[3]
+    else:
+        True
     #checking and incrementing it to be at 'Tick" column
     #   print(char1)
     charnew = chr(ord(char1) + 5)
@@ -172,6 +179,12 @@ def tickCoord(sheet1, cell):
     #joining existing constant row char with new col value
     global inputnew
     inputnew = ''.join(charnew + char2)
+    if bool(list(cell)[2]) == True:
+        inputnew = ''.join(charnew + char2 + char3)
+    elif bool(list(cell)[3]) == True:
+        inputnew = ''.join(charnew + char2 + char3 + char4)
+    else:
+        True
     #   print(inputnew)
     #checking existing value at Tick column
     print("Coord " + inputnew +" before : "+ str(sheet1[inputnew].value) )
@@ -192,7 +205,6 @@ while True :
     promptAction()
 
 
-
 #saving the file
 #make sure to close the excel or else perm is denied
-wb.save(filename = 'DATA_BUKU.xlsx')
+wb.save(filename = excfile)

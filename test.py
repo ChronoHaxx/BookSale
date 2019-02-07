@@ -1,10 +1,12 @@
-from prettytable import PrettyTable
-    
-x = PrettyTable()
-
-x.field_names = ["City name", "Area", "Population", "Annual Rainfall"]
-
-x.add_row(["Adelaide", 1295, 1158259])
+cell = 'A21'
 
 
-print(x)
+n = 0
+char = []
+char[n] = list(cell)
+n = 1
+for char in cell :
+    char[n] = list(cell)[n]
+    n += 1
+    print(char[char])
+
