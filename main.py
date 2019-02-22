@@ -58,6 +58,8 @@ def act12():
         newTable = PrettyTable()
         newTable.field_names = (list_with_values_header)
         list_with_values[5] = "/"
+        list_with_values[4] = inputprice
+        list_with_values[6] = inputbuyer
         newTable.add_row(list_with_values)
         print(newTable)
         wb.save(filename = excfile)
@@ -135,6 +137,8 @@ def act5():
                     newTable = PrettyTable()
                     newTable.field_names = (list_with_values_header)
                     list_with_values[5] = "/"
+                    list_with_values[4] = inputprice
+                    list_with_values[6] = inputbuyer
                     newTable.add_row(list_with_values)
                     print(newTable)
                     
@@ -191,7 +195,7 @@ def findCell(sheet1, no_siri):
 def cellCheck(sheet1, i):
     global cell
     cell = sheet1.cell(row = i,column = 1).coordinate
-    print("value for cell " + cell + ": " + str(sheet1[cell].value)) 
+    #print("value for cell " + cell + ": " + str(sheet1[cell].value)) 
 
 #list used to turn string to char array
 #print(list(cell))
@@ -235,9 +239,13 @@ def tickCoord(sheet1, cell):
     #checking and incrementing it to be at 'Tick" column
     #   print(char1)
     charnew = chr(ord(char1) + 5)
+    charnewprice = chr(ord(char1) + 4)
+    charnewbuyer = chr(ord(char1) + 6)
     #   print(charnew)
     #joining existing constant row char with new col value
     global inputnew
+    global inputnewprice
+    global inputnewbuyer
     #another lazy fix
     #try :
     #    bool(list(cell)[3])
@@ -262,25 +270,53 @@ def tickCoord(sheet1, cell):
 
     #
     inputnew = charnew
+    inputnewprice = charnewprice
+    inputnewbuyer = charnewbuyer
     for x in cell :
         if x == 'A':
-            print("A is dismissed here")
+            True
+            #print("A is dismissed here")
         else:
-            print(x)
+            #print(x)
             new = "".join(x)
             inputnew += new
 
-    print(inputnew)
+    for x in cell :
+        if x == 'A':
+            True
+            #print("A is dismissed here")
+        else:
+            #print(x)
+            new = "".join(x)
+            inputnewprice += new
+
+    for x in cell :
+        if x == 'A':
+            True
+            #print("A is dismissed here")
+        else:
+            #print(x)
+            new = "".join(x)
+            inputnewbuyer += new
+
+    #print(inputnew)
         
 
     #checking existing value at Tick column
-    print("Coord " + inputnew +" before : "+ str(sheet1[inputnew].value) )
+    #print("Coord " + inputnew +" before : "+ str(sheet1[inputnew].value) )
 
 def insertTick(sheet1, inputnew):
     #inserting a 'tick' ("/")
+    global inputprice
+    global inputbuyer
+    inputbuyer = input("Who bought this book?\ne.g: 'HAZIMI' or 'MUHAMMAD' without '' marks\n")
+    inputprice = input("How much did he pay for it? \ne.g: '3.00' or '0.00' without '' marks\n")
     sheet1[inputnew] = "/"
+    sheet1[inputnewprice] = inputprice
+    sheet1[inputnewbuyer] = inputbuyer
     #checking its value now
     print("Coord " + inputnew +" after : "+ str(sheet1[inputnew].value)  )
+    
 
 def deleteTick(sheet1, inputnew):
     #deleting a 'tick' ("/")
